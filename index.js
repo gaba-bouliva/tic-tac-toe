@@ -1,29 +1,17 @@
 /**
-  TODO
-  display the gameboard
-  create a player object factory
-  create a board module
-  create a gameplay module (which initalizes data inot the gameboard on html dom)
-  set player one mark ( X )
-  set player two mark ( O )
-  player 1 clicks on area on gameboard
-  if area is not occupied position player1's mark on area
-  else do nothing
-  repeat line 4 and to 6 for player 2
-  repeat line 5 to 8 untill a player wins or the gameboard gets filled with their marks
-  A player wins if the player has 3 of his marks aligned vertically, horizontally or diagonally
+  TIC TAC TOE
 
  */
 
 function updateDomWithPlayerMark (div, player) {
   /**
-   * Mark div cell selected by player with current player's mark('X' or 'O') UI page
+   * Mark div cell selected by player with current player's mark('X' or 'O') on UI page
    */
-  const divElement = document.querySelector(`#${div.id}`) // get the latest dom div element
+  const divElement = document.querySelector(`#${div.id}`) 
   divElement.innerText = player.mark
 }
 
-function verifyWinner(gameboard){
+function verifyWinner (gameboard) {
   /**
    * There is a winner if
    * all values in a row are the same
@@ -31,149 +19,117 @@ function verifyWinner(gameboard){
    * all values diagonally are the same
    */
 
-  let horizontalWin = false;
-  let verticalWin = false;
-  let diagonalWin = false;
+  let horizontalWin = false
+  let verticalWin = false
+  let diagonalWin = false
 
-  let getColumnValues = (colIndex, gameboard) => {
-    let colValues = [];
+  const getColumnValues = (colIndex, gameboard) => {
+    const colValues = []
     for (let row = 0; row < gameboard.length; row++) {
       colValues.push(gameboard[row][colIndex])
     }
-    return colValues;
+    return colValues
   }
 
-  let getRightLeftDiagonalValues = (gameboard) =>{
-    let diagonalValuesRightLeft = []
+  const getRightLeftDiagonalValues = (gameboard) => {
+    const diagonalValuesRightLeft = []
     for (let row = 0; row < gameboard.length; row++) {
-      diagonalValuesRightLeft.push(gameboard[row][(gameboard.length - 1)-row]) 
+      diagonalValuesRightLeft.push(gameboard[row][(gameboard.length - 1) - row])
     }
 
-    return diagonalValuesRightLeft;
+    return diagonalValuesRightLeft
   }
 
-  let getLeftRightDiagonalValues = (gameboard) =>{
-    let diagonalValuesLeftRight = []
+  const getLeftRightDiagonalValues = (gameboard) => {
+    const diagonalValuesLeftRight = []
     for (let row = 0; row < gameboard.length; row++) {
-      diagonalValuesLeftRight.push(gameboard[row][row]) 
+      diagonalValuesLeftRight.push(gameboard[row][row])
     }
 
-    return diagonalValuesLeftRight;
+    return diagonalValuesLeftRight
   }
 
   // check if all values in a row are the same
   for (let row = 0; row < gameboard.length; row++) {
     /**
-     * make sure we do not reach last element in gameboard array 
+     * make sure we do not reach last element in gameboard array
      * so we stop at 2nd to last to compare to last element in array
-     * if not at some point i+1 would result to undefined
+     * if not at some point col+1 would result to undefined
      */
 
-    for (let col = 0; col < gameboard.length -1 ; col++) {
-      
-      if (gameboard[row][col] !== gameboard[row][col+1]){
-        break;
-      }else{
-        
-        if(col === gameboard.length -2 && gameboard[row][col] !== ''){
-          horizontalWin = true;
+    for (let col = 0; col < gameboard.length - 1; col++) {
+      if (gameboard[row][col] !== gameboard[row][col + 1]) {
+        break
+      } else {
+        if (col === gameboard.length - 2 && gameboard[row][col] !== '') {
+          horizontalWin = true
         }
       }
-      
     }
-    
   }
 
+  // check if a player has aligned three marks vertically
 
-  // check if a player has aligned three marks vertically 
-  
   for (let col = 0; col < gameboard.length; col++) {
-    
-    const result = getColumnValues(col, gameboard);
+    const result = getColumnValues(col, gameboard)
 
-    const allEqual =  result.every(val => val === result[0] && val !== '');
-    
+    const allEqual = result.every(val => val === result[0] && val !== '')
+
     if (allEqual) verticalWin = true
+  }
 
-}
-
-const leftRightDiagonalMarks =  getLeftRightDiagonalValues(gameboard);
-const diagonalLeftRightAllEqual =  leftRightDiagonalMarks.every(val => val === leftRightDiagonalMarks[0] && val !== '');
-if (diagonalLeftRightAllEqual) diagonalWin = true
+  const leftRightDiagonalMarks = getLeftRightDiagonalValues(gameboard)
+  const diagonalLeftRightAllEqual = leftRightDiagonalMarks.every(val => val === leftRightDiagonalMarks[0] &&
+                                                                val !== '')
+  if (diagonalLeftRightAllEqual) diagonalWin = true
 
   for (let i = 0; i < gameboard.length; i++) {
-    
     /**
-     * make sure i do not reach last element in gameboard array 
+     * make sure i do not reach last element in gameboard array
      */
 
-    // check if a user has aligned his marks diagonally from left to right 
-    if(i < gameboard.length - 1){ 
-      
-      if (gameboard[i][i] !== gameboard[i+1][i+1] ){
-        break;
-      }else{
-        if (i === gameboard.length - 2 && gameboard[i][i] !== ''){
-          diagonalWin = true;
+    // check if a user has aligned his marks diagonally from left to right
+    if (i < gameboard.length - 1) {
+      if (gameboard[i][i] !== gameboard[i + 1][i + 1]) {
+        break
+      } else {
+        if (i === gameboard.length - 2 && gameboard[i][i] !== '') {
+          diagonalWin = true
         }
       }
-
     }
-
   }
 
-  const rightLeftDiagonalMarks =  getRightLeftDiagonalValues(gameboard);
-  const diagonalRightLeftAllEqual =  rightLeftDiagonalMarks.every(val => val === rightLeftDiagonalMarks[0] && val !== '');
+  const rightLeftDiagonalMarks = getRightLeftDiagonalValues(gameboard)
+  const diagonalRightLeftAllEqual = rightLeftDiagonalMarks.every(val => val === rightLeftDiagonalMarks[0] && val !== '')
   if (diagonalRightLeftAllEqual) diagonalWin = true
 
-      // check if a user has aligned his marks diagonally from right to left
-    // for (let i = 0; i < gameboard.length; i++){
-      
-    //   console.log(gameboard[i][(gameboard.length - 1) - i], gameboard[i+1][(gameboard.length - 1) - i+1] );
-    //   if((gameboard.length - i) > 0){ 
-        
-    //     if (gameboard[i][(gameboard.length - 1) - i] !== gameboard[i+1][(gameboard.length - 1) - i+1] ){
-    //       break;
-    //     }else{
-    //       if ((gameboard.length - i) === 1 &&  gameboard[i][(gameboard.length - 1) - i] !==''){
-    //         diagonalWin = true;
-    //       }
-    //     }
-    //   }
-  
-      
-    // }
-  
-
-  if (horizontalWin || verticalWin || diagonalWin){
-    return true;
+  if (horizontalWin || verticalWin || diagonalWin) {
+    return true
   }
-  return false;
+  return false
 }
 
 
 function Player (name, mark) {
-
-  let nbrPlays = 0;
+  let nbrPlays = 0
 
   const markGameboard = (row, col, gameboard) => {
     /**
-     * Update the array representing the gameboard 
-     * 
+     * Update the array representing the gameboard
+     *
      */
     const rowIndex = parseInt(row)
     const colIndex = parseInt(col)
 
-    const oldGameBoard = gameboard.map(arr => [...arr])
-
     if ((gameboard[row][col] !== 'O') && (gameboard[row][col]) !== 'X') {
-      gameboard[rowIndex][colIndex] = mark;
-      nbrPlays += 1;
+      gameboard[rowIndex][colIndex] = mark
+      nbrPlays += 1
     }
     return gameboard
   }
 
-  let getNbrPlays = () => nbrPlays;
+  const getNbrPlays = () => nbrPlays
 
   return {
     name,
@@ -185,28 +141,21 @@ function Player (name, mark) {
 
 function play () {
   /**
-   * link each div cell on gameboard in the dom to a position in a 3D array
-   * Add click event listener on every div cell on gameboard
-   * When ever each div cell is clicked
-   * if the cell is empty place player's mark in the
-   * Mark the div cell selected with current player's mark on html dom
-   * set the corresponding position of the div cell on the js 3D array with the current player's mark also
+   * Initalize 2D array gameboard to track each player's mark positioned on UI gameboard
    */
 
-  const gameboard = [] // initial gameboard state 
+  const gameboard = [] // initial gameboard state
   let oldGameBoard = [] // tracks the previous gameboard state
 
   for (let i = 0; i < 3; i++) {
-    gameboard[i] = ['', '', '']
-    oldGameBoard[i] = ['','',''];
+    gameboard[i] = ['', '', ''] 
+    oldGameBoard[i] = ['', '', '']
   }
 
-  gameboard.forEach(arr => {
-    console.log(arr);
-  })
+ 
   const player1 = Player('player1', 'X')
   const player2 = Player('player2', 'O')
-  let totalNbrPlays = 0;
+  let totalNbrPlays = 0
 
   let currentPlayer = player1
 
@@ -223,51 +172,64 @@ function play () {
         updatedGameBoard = currentPlayer.markGameboard(row, col, gameboard)
       } else {
         updateDomWithPlayerMark(event.target, currentPlayer)
-        oldGameBoard = updatedGameBoard.map(arr => [...arr]) 
+        oldGameBoard = updatedGameBoard.map(arr => [...arr])
 
-        totalNbrPlays = player1.getNbrPlays() + player2.getNbrPlays();
-        let fullGameboard = gameboard.length * gameboard.length;
-        if(totalNbrPlays >= fullGameboard){
-          console.log('Draw Game!');
-          
+        totalNbrPlays = player1.getNbrPlays() + player2.getNbrPlays()
+        const fullGameboard = gameboard.length * gameboard.length
+        if (totalNbrPlays >= fullGameboard) {
+          console.log('Draw Game!')
+          const gameResultDiv = document.querySelector('.game-result')
+          const resultMsgDiv = document.querySelector('.outcome-msg')
+          const winnerDiv = document.querySelector('.winner')
+          const gameBoard = document.querySelector('.gameboard')
+          winnerDiv.innerText = ''
+          resultMsgDiv.innerText = 'Draw Game!'
+          gameBoard.style.display = 'none'
+          gameResultDiv.style.display = 'flex'
         }
-        
-        if (currentPlayer.name === 'player2') {
-          if(player2.getNbrPlays() >= 3){
-            const result = verifyWinner(gameboard);
-             if (result){
-            
-                console.log(`${currentPlayer.name} with ${currentPlayer.mark} mark has Won!`);
-                
-             }
-             
-          }
-            
-            currentPlayer = player1
-      
-        }else {
-          if(player1.getNbrPlays() >= 3){
-            const result = verifyWinner(gameboard);
-              if (result){
-              
-                console.log(`${player1.name} with ${player1.mark} mark has Won!`);
-                
 
-              }
-              
-              
+        if (currentPlayer.name === 'player2') {
+          if (player2.getNbrPlays() >= 3) {
+            const result = verifyWinner(gameboard)
+            if (result) {
+              const gameResultDiv = document.querySelector('.game-result')
+              const resultMsgDiv = document.querySelector('.outcome-msg')
+              const winnerDiv = document.querySelector('.winner')
+              const gameBoard = document.querySelector('.gameboard')
+              winnerDiv.innerText = currentPlayer.mark
+              resultMsgDiv.innerText = 'Winner!'
+              gameBoard.style.display = 'none'
+              gameResultDiv.style.display = 'flex'
+              console.log(`${currentPlayer.name} with ${currentPlayer.mark} mark has Won!`)
+            }
+          }
+
+          currentPlayer = player1
+        } else {
+          if (player1.getNbrPlays() >= 3) {
+            const result = verifyWinner(gameboard)
+            if (result) {
+              const gameResultDiv = document.querySelector('.game-result')
+              const resultMsgDiv = document.querySelector('.outcome-msg')
+              const winnerDiv = document.querySelector('.winner')
+              const gameBoard = document.querySelector('.gameboard')
+
+              winnerDiv.innerText = currentPlayer.mark
+              resultMsgDiv.innerText = 'Winner!'
+              gameBoard.style.display = 'none'
+              gameResultDiv.style.display = 'flex'
+              console.log(`${player1.name} with ${player1.mark} mark has Won!`)
+            }
           }
           currentPlayer = player2
-          
         }
-        
-        
-
       }
     })
   })
-
-
 }
 
 play()
+
+function restartGame(){
+  
+}

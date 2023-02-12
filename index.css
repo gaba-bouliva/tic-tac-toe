@@ -78,3 +78,22 @@ div.footer{
   font-size: 16px;
   cursor: pointer;
 }
+.winner{
+  font-family: sans-serif;
+  color: gray;
+  font-size: 150px;
+  text-align: center;
+}
+
+.outcome-msg{
+  font-size: 80px;
+  font-family: sans-serif;
+  color: gray;
+  text-align: center;
+}
+
+.game-result{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+}
