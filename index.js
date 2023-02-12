@@ -231,5 +231,5 @@ function play () {
 play()
 
 function restartGame(){
-  
+    location.reload()
 }
